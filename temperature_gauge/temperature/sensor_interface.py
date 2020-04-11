@@ -5,7 +5,7 @@ import typing
 class TemperatureUnit(enum.Enum):
     CELSIUS = 'C'
     KELVIN = 'K'
-    FARENHEIT = 'F'
+    FAHRENHEIT = 'F'
 
 
 class TemperatureReading(typing.NamedTuple):
@@ -27,10 +27,10 @@ class TemperatureSensorInterface:
             unit=TemperatureUnit.CELSIUS,
         )
 
-    def read_farenheit(self) -> TemperatureReading:
+    def read_fahrenheit(self) -> TemperatureReading:
         reading_k = self.read_kelvin()
         return TemperatureReading(
             timestamp=reading_k.timestamp,
             value=reading_k.value * 1.8 - 459.67,
-            unit=TemperatureUnit.FARENHEIT,
+            unit=TemperatureUnit.FAHRENHEIT,
         )

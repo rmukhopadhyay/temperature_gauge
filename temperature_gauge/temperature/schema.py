@@ -27,7 +27,7 @@ class Query(graphene.ObjectType):
             return temperature_sensor.read_kelvin()
         elif unit == TemperatureUnitGQL.CELSIUS.value:
             return temperature_sensor.read_celsius()
-        elif unit == TemperatureUnitGQL.FARENHEIT.value:
-            return temperature_sensor.read_farenheit()
+        elif unit == TemperatureUnitGQL.FAHRENHEIT.value:
+            return temperature_sensor.read_fahrenheit()
         else:
             raise graphql.GraphQLError('Unsupported temperature unit')
