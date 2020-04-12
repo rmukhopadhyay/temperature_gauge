@@ -18,10 +18,9 @@ class TemperatureReadingGQLType(graphene.ObjectType):
 
 class Query(graphene.ObjectType):
 
-    currentTemperature = graphene.Field(
-        TemperatureReadingGQLType, unit=TemperatureUnitGQL())
+    current_temperature = graphene.Field(TemperatureReadingGQLType, unit=TemperatureUnitGQL())
 
-    def resolve_currentTemperature(self, info, unit=TemperatureUnitGQL.KELVIN.value, **kwargs):
+    def resolve_current_temperature(self, info, unit=TemperatureUnitGQL.KELVIN.value, **kwargs):
         # TODO (Rishi): Figure out why we are being sent the enum value instead of the enum
         if unit == TemperatureUnitGQL.KELVIN.value:
             return temperature_sensor.read_kelvin()
