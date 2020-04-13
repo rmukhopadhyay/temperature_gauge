@@ -1,10 +1,15 @@
 import graphene
+from rx import Observable
 
 from temperature import schema as temperature_schema
 
 
-class Query(temperature_schema.Query, graphene.ObjectType):
+class Query(temperature_schema.Query):
     pass
 
 
-schema = graphene.Schema(query=Query)
+class Subscription(temperature_schema.Subscription):
+    pass
+
+
+schema = graphene.Schema(query=Query, subscription=Subscription)

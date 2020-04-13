@@ -16,6 +16,14 @@ class TemperatureReading(typing.NamedTuple):
 
 class TemperatureSensorInterface:
 
+    def read(self, unit: TemperatureUnit = TemperatureUnit.KELVIN) -> TemperatureReading:
+        if unit == TemperatureUnit.KELVIN:
+            return self.read_kelvin()
+        elif unit == TemperatureUnit.CELSIUS:
+            return self.read_celsius()
+        elif unit == TemperatureUnit.FAHRENHEIT:
+            return self.read_fahrenheit()
+
     def read_kelvin(self) -> TemperatureReading:
         raise NotImplementedError()
 

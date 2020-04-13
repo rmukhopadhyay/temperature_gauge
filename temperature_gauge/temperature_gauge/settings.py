@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'graphene_django',
+    'graphene_subscriptions',
     'temperature',
 ]
 
@@ -70,7 +72,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'temperature_gauge.wsgi.application'
+ASGI_APPLICATION = "temperature_gauge.routing.application"
 
+# Configure channels (https://channels.readthedocs.io/en/latest/introduction.html)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

@@ -1,5 +1,6 @@
 import graphene
 import graphql
+import rx
 
 from temperature import random_sensor
 from temperature import sensor_interface
@@ -20,13 +21,26 @@ class Query(graphene.ObjectType):
 
     current_temperature = graphene.Field(TemperatureReadingGQLType, unit=TemperatureUnitGQL())
 
-    def resolve_current_temperature(self, info, unit=TemperatureUnitGQL.KELVIN.value, **kwargs):
-        # TODO (Rishi): Figure out why we are being sent the enum value instead of the enum
-        if unit == TemperatureUnitGQL.KELVIN.value:
-            return temperature_sensor.read_kelvin()
-        elif unit == TemperatureUnitGQL.CELSIUS.value:
-            return temperature_sensor.read_celsius()
-        elif unit == TemperatureUnitGQL.FAHRENHEIT.value:
-            return temperature_sensor.read_fahrenheit()
-        else:
-            raise graphql.GraphQLError('Unsupported temperature unit')
+    def resolve_current_temperature(
+            self, info, unit=TemperatureUnitGQL.KELVIN.value, **kwargs) -> sensor_interface.TemperatureReading:
+        # Instead of passing an enum, the framework passes an enum value
+        try:
+            unit_enum = sensor_interface.TemperatureUnit(unit)
+        except ValueError as e:
+            raise graphql.GraphQLError(f'Unsupported temperature unit: {e}')
+
+        return temperature_sensor.read(unit_enum)
+
+
+class Subscription(graphene.ObjectType):
+    current_temperature_subscribe = graphene.Field(TemperatureReadingGQLType, unit=TemperatureUnitGQL())
+
+    def resolve_current_temperature_subscribe(
+            self, info, unit=TemperatureUnitGQL.KELVIN.value, **kwargs) -> rx.Observable:
+        # Instead of passing an enum, the framework passes an enum value
+        try:
+            unit_enum = sensor_interface.TemperatureUnit(unit)
+        except ValueError as e:
+            raise graphql.GraphQLError(f'Unsupported temperature unit: {e}')
+
+        return rx.Observable.interval(1000).map(lambda i: temperature_sensor.read(unit_enum))
