@@ -3,4 +3,5 @@ Django==3.0.5
 graphene==2.1.8
 graphene-django==2.9.0
 graphene-subscriptions==1.0.2
+pytest==5.4.1
 Rx==1.6.1
