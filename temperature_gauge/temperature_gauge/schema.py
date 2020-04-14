@@ -1,5 +1,4 @@
 import graphene
-from rx import Observable
 
 from temperature import schema as temperature_schema
 
